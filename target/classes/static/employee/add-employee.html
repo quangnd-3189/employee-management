@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Add</title>
+</head>
+<body>
+  <h3>Add Employee</h1>
+  <form id="add-employee-form" style="padding-bottom:20px">
+    <div style="padding-bottom: 10px;">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div style="padding-bottom: 10px;">
+      <label for="email">Email:</label>
+      <input type="text" id="email" name="email" required>
+    </div>
+    <div style="padding-bottom: 10px;">
+      <label for="department">Department:</label>
+      <select id="departmentId" name="departmentId" required></select>
+    </div>
+    <button type="button" onclick="addEmployee()">Add Employee</button>
+  </form>
+
+  <button onclick="window.location.href='/'">Back to Home</button>
+
+  <script>
+
+    fetch('http://localhost:8081/departments/all')
+      .then(response => response.json())
+      .then(data => {
+        console.log('Departments:', data);
+        const departmentInput = document.getElementById('departmentId');
+        data.data.forEach(department => { 
+          const option = document.createElement('option');
+          option.value = department.id;
+          option.textContent = department.name;
+          departmentInput.appendChild(option);
+        });
+      }).catch(error => console.error('Error fetching departments:', error)); 
+
+
+    function addEmployee() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const departmentId = document.getElementById('departmentId').value;
+
+      fetch('http://localhost:8081/employees/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email, departmentId })
+      })
+      .then(response => {
+        console.log('Add Employee Response:', response);
+        if (response.ok) {
+          alert('Employee added successfully');
+          window.location.href = '/';
+        } else {
+          alert('Failed to add employee');
+        }
+      })
+      .catch(error => console.error('Error adding employee:', error));
+    }
+  </script>
+
+</body>
+</html>
