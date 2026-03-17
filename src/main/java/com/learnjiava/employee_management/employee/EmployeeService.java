@@ -26,6 +26,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import lombok.RequiredArgsConstructor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 @RequiredArgsConstructor
 public class EmployeeService {
@@ -33,6 +36,8 @@ public class EmployeeService {
   private final DepartmentRepository departmentRepository;
   private final UtilityService utilityService;
   private final ModelMapper modelMapper;
+  private static final Logger logger = LoggerFactory.getLogger(EmployeeService.class);
+
 
   public List<EmployeeDTO> getAllEmployees() {
     List<Employee> employees = employeeRepository.findAllWithoutDeleteAt();
@@ -112,8 +117,9 @@ public class EmployeeService {
 
     employee.setDepartment(department);
     employeeRepository.save(employee);
-
-    return modelMapper.map(employee, EmployeeDTO.class);
+    EmployeeDTO result = modelMapper.map(employee, EmployeeDTO.class);
+    logger.info("Created employee: {}", result);
+    return result;
   }
 
   @Transactional(rollbackFor = Exception.class)
@@ -126,7 +132,9 @@ public class EmployeeService {
     employee.setDepartment(department);
     employeeRepository.save(employee);
 
-    return modelMapper.map(employee, EmployeeDTO.class);
+    EmployeeDTO result = modelMapper.map(employee, EmployeeDTO.class);
+    logger.info("Updated employee: {}", result);
+    return result;
   }
 
   @Transactional(rollbackFor = Exception.class)

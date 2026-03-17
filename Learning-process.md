@@ -33,6 +33,6 @@ Progress: **70%**
 
 ## 🎯 Goal
 
-Complete all modules and build a **full Spring Boot production-ready project** including:
+Complete all modules in **Mini Project** at:
 
 * Done in 18/3/2026

@@ -2,16 +2,20 @@ package com.learnjiava.employee_management;
 
 import java.util.stream.Collectors;
 
+import org.slf4j.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.learnjiava.employee_management.common.LogUtil;
 import com.learnjiava.employee_management.common.httpresponse.BaseResponse;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<BaseResponse<Object>> handleValidationExceptions(
@@ -19,6 +23,8 @@ public class GlobalExceptionHandler {
 
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         String message = ex.getMessage();
+
+        logger.error(LogUtil.formatException(ex));
 
         if (ex instanceof MethodArgumentNotValidException) {
             status = HttpStatus.BAD_REQUEST;
@@ -34,9 +40,9 @@ public class GlobalExceptionHandler {
         }
 
         if(ex instanceof ResponseStatusException) {
-          ResponseStatusException responseStatusEx = (org.springframework.web.server.ResponseStatusException) ex;
-          status = HttpStatus.BAD_REQUEST;
-          message = responseStatusEx.getReason();
+            ResponseStatusException responseStatusEx = (org.springframework.web.server.ResponseStatusException) ex;
+            status = HttpStatus.BAD_REQUEST;
+            message = responseStatusEx.getReason();
         }
 
         return new ResponseEntity<>(new BaseResponse<>(null, status.value(), message), status);
