@@ -8,7 +8,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.learnjiava.employee_management.common.jwt.JwtAuthFilter;
+import com.learnjiava.employee_management.security.JwtAuthFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +32,7 @@ public class SecurityConfig {
 							"/employee/**",
 							"/login",
 							"/register",
+							"/employees/statistic",
 							"/auth/**",
 							"/swagger-ui/**"
             ).permitAll()

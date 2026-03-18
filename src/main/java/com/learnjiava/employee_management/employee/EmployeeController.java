@@ -99,4 +99,11 @@ public class EmployeeController {
     employeeService.deleteEmployee(id);
     return new SuccessResponse<>(id);
   }
+
+  @PreAuthorize("hasAnyRole('USER','ADMIN')")
+  @GetMapping("statistics")
+  public String getMethodName(@RequestParam String param) {
+      return new String();
+  }
+  
 }

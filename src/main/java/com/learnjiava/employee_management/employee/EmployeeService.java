@@ -18,6 +18,7 @@ import com.learnjiava.employee_management.department.entity.DepartmentRepository
 import com.learnjiava.employee_management.employee.dto.request.CreateEmployeeDTO;
 import com.learnjiava.employee_management.employee.dto.request.UpdateEmployeeDTO;
 import com.learnjiava.employee_management.employee.dto.response.EmployeeDTO;
+import com.learnjiava.employee_management.employee.dto.response.EmployeeStatisticDTO;
 import com.learnjiava.employee_management.employee.entity.Employee;
 import com.learnjiava.employee_management.employee.entity.EmployeeRepository;
 
@@ -154,5 +155,12 @@ public class EmployeeService {
   public void deleteEmployee(UUID id) {
     int result = employeeRepository.removeEmployeeById(id);
     if (result <= 0) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found");
+  }
+
+  public EmployeeStatisticDTO getEmployeeStatistic() {
+    int employeeCount = employeeRepository.countByDeletedAtIsNull();
+    int departmentCount = departmentRepository.findAll().size();
+    List<Object[]> employeePerDepartment = employeeRepository.employeePerDepartments();
+    return new EmployeeStatisticDTO(employeeCount, departmentCount, employeePerDepartment);
   }
 }

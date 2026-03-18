@@ -1,4 +1,4 @@
-package com.learnjiava.employee_management.common.jwt;
+package com.learnjiava.employee_management.security;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.learnjiava.employee_management.auth.dto.response.UserDTO;
-import com.learnjiava.employee_management.security.CustomUserDetails;
+import com.learnjiava.employee_management.common.jwt.JwtService;
 
 import java.io.IOException;
 import java.util.List;

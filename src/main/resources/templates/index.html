@@ -13,12 +13,15 @@
 </head>
 <body>
   <h1 style="text-align: center; margin-top: 20px;">Employee Management System</h1>
-  <div id="user-info" style="display: flex; justify-content: flex-end; align-items: center; padding: 10px 20px;">
+  <div style="text-align: right; margin-top: 20px;">
+    <button style="margin-right: 20px;" onclick="window.location.href='/employees/statistic'">Employee Statistics</button>
+  </div>
+  <div id="user-info" style="display: flex; justify-content: flex-end; align-items: center; padding: 20px 20px;">
     <text style="margin-right: 20px;">Welcome, <span id="username"></span>!</text>
     <text style="margin-right: 20px;">Role: <span id="role"></span></text>
-    <button style="margin-bottom: 10px;" onclick="logout()">Logout</button> <br>
+    <button onclick="logout()">Logout</button> <br>
   </div>
-  <button style="margin-bottom: 10px;" onclick="addEmployee()" >Add Employee</button> <br>
+  <button style="margin-bottom: 20px;" onclick="addEmployee()" >Add Employee</button> <br>
 
   <input type="text" id="search-input" placeholder="Search by name or department name" style="margin-bottom: 10px; width: 300px; padding: 5px;">
   <select id="search-type" style="margin-left: 10px; padding: 5px;">

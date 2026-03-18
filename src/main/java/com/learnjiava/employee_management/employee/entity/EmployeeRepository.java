@@ -44,4 +44,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
 
   @Query("SELECT COUNT(e) FROM Employee e WHERE e.deletedAt IS NULL")
   int countByDeletedAtIsNull();
+
+  @Query("SELECT d.name, COUNT(e) FROM Employee e LEFT JOIN e.department d WHERE e.deletedAt IS NULL GROUP BY d.name")
+  List<Object[]> employeePerDepartments();
 }
