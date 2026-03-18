@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import org.slf4j.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,6 +26,10 @@ public class GlobalExceptionHandler {
         String message = ex.getMessage();
 
         logger.error(LogUtil.formatException(ex));
+
+        if (ex instanceof AccessDeniedException) {
+            status = HttpStatus.FORBIDDEN;
+        }
 
         if (ex instanceof MethodArgumentNotValidException) {
             status = HttpStatus.BAD_REQUEST;

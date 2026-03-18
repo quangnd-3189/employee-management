@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
@@ -19,10 +21,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RestController
 @RequestMapping("departments")
 @RequiredArgsConstructor
+@EnableMethodSecurity
 public class DepartmentController {
 
   private final DepartmentService departmentService;
 
+  @PreAuthorize("hasAnyRole('USER','ADMIN')")
   @GetMapping("/all")
   public BaseResponse<List<DepartmentDTO>> getAllDepartments() {
     List<DepartmentDTO> departments = departmentService.getAllDepartments();

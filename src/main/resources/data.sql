@@ -1,5 +1,17 @@
 DROP TABLE IF EXISTS employees;
 DROP TABLE IF EXISTS departments;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+  id BINARY(16) PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
+  password VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  role VARCHAR(100) NOT NULL,
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP,
+  deleted_at TIMESTAMP
+);
 
 CREATE TABLE departments (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -19,6 +31,11 @@ CREATE TABLE employees (
   deleted_at TIMESTAMP,
   FOREIGN KEY (department_id) REFERENCES departments(id)
 );
+-- admin account: admin / admin
+-- user account: user / user
+INSERT INTO users (id, username, password, email, role) VALUES
+(UUID_TO_BIN(UUID()), 'admin', '$2a$12$nR9OOi1pqo1UioO1tccA0ewRHQVe1oX/AeW9d/WRyImBr4WfAhJdK', 'admin@example.com', 'ADMIN'),
+(UUID_TO_BIN(UUID()), 'user', '$2a$12$RiVK6vsf4p5qNnHqGCeV7uz8a1qSChYt5lunmsNf5lcZSg9g3rNNG', 'user@example.com', 'USER');
 
 INSERT INTO departments (name) VALUES ('HR'), ('Engineering'), ('Sales');
 

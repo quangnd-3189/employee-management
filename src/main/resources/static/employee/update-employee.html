@@ -5,8 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Update</title>
     <script>
+      const token = sessionStorage.getItem('token');
+      console.log('User Token:', token);
       // fetch department list for dropdown
-      fetch('http://localhost:8082/departments/all')
+      fetch('http://localhost:8082/departments/all', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
         .then(response => response.json())
         .then(data => {
           console.log('Departments:', data);
@@ -22,7 +29,12 @@
           const urlParams = new URLSearchParams(window.location.search);
           const employeeId = urlParams.get('id');
           if (employeeId) {
-            fetch(`http://localhost:8082/employees/detail/${employeeId}`)
+            fetch(`http://localhost:8082/employees/detail/${employeeId}`, {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            })
               .then(response => response.json())
               .then(data => {
                 const employee = data.data;
@@ -52,7 +64,8 @@
         fetch('http://localhost:8082/employees/update', {
           method: 'PUT',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
           },
           body: JSON.stringify({ 
             updateEmployeeId: employeeId,

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,8 +12,13 @@
     <script src="https://cdn.jsdelivr.net/npm/paginationjs@2.6.0/dist/pagination.min.js"></script>
 </head>
 <body>
-  
-  <button style="margin-bottom: 10px;" onclick="addEmployee()">Add Employee</button> <br>
+  <h1 style="text-align: center; margin-top: 20px;">Employee Management System</h1>
+  <div id="user-info" style="display: flex; justify-content: flex-end; align-items: center; padding: 10px 20px;">
+    <text style="margin-right: 20px;">Welcome, <span id="username"></span>!</text>
+    <text style="margin-right: 20px;">Role: <span id="role"></span></text>
+    <button style="margin-bottom: 10px;" onclick="logout()">Logout</button> <br>
+  </div>
+  <button style="margin-bottom: 10px;" onclick="addEmployee()" >Add Employee</button> <br>
 
   <input type="text" id="search-input" placeholder="Search by name or department name" style="margin-bottom: 10px; width: 300px; padding: 5px;">
   <select id="search-type" style="margin-left: 10px; padding: 5px;">
@@ -26,7 +33,38 @@
 
   <script>
 
-    fetch('http://localhost:8082/employees/all')
+    // get users's info from session storage
+    const token = sessionStorage.getItem('token');
+
+    if(!token) {
+      alert('You must be logged in to access this page.');
+      window.location.href = '/login';
+    } else {
+      console.log('User Token:', token);
+    }
+
+    fetch('http://localhost:8082/users/info', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('User Info:', data);
+      sessionStorage.setItem('username', data.data.username);
+      sessionStorage.setItem('role', data.data.role);
+      document.getElementById('username').textContent = data.data.username;
+      document.getElementById('role').textContent = data.data.role;
+    })
+    .catch(error => console.error('Error fetching user info:', error));
+
+    fetch('http://localhost:8082/employees/all', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         $('#pagination-container').pagination({
@@ -83,7 +121,10 @@
     function deleteEmployee(id) {
       if (confirm('Are you sure you want to delete this employee?')) {
         fetch(`http://localhost:8082/employees/delete/${id}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         })
         .then(response => {
           if (response.ok) {
@@ -108,7 +149,12 @@
         url += `department=${encodeURIComponent(query)}`;
       }
 
-      fetch(url)
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
         .then(response => response.json())
         .then(data => {
           console.log('Search Results:', data.data);
@@ -131,6 +177,11 @@
     function resetSearch() {
       document.getElementById('search-input').value = '';
       location.reload();
+    }
+
+    function logout() {
+      sessionStorage.removeItem('token');
+      window.location.href = '/login';
     }
   </script>
 

@@ -26,8 +26,14 @@
   <button onclick="window.location.href='/'">Back to Home</button>
 
   <script>
-
-    fetch('http://localhost:8082/departments/all')
+    const token = sessionStorage.getItem('token');
+    console.log('User Token:', token);
+    fetch('http://localhost:8082/departments/all', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       .then(response => response.json())
       .then(data => {
         console.log('Departments:', data);
@@ -49,7 +55,8 @@
       fetch('http://localhost:8082/employees/add', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ name, email, departmentId })
       })
