@@ -4,8 +4,8 @@
 - Java version: 21
 - Maven version (wrapper): 3.9.12
 - Spring Boot version: 4.0.3
-- Home URL: http://localhost:8081
-- Swagger UI : http://localhost:8081/swagger-ui/index.html
+- Home URL: http://localhost:8082
+- Swagger UI : http://localhost:8082/swagger-ui/index.html
 
 ## Run MySQL With Docker
 This project includes a Docker Compose file for MySQL at `docker/docker-compose.yml`.

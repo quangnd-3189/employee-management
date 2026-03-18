@@ -35,6 +35,11 @@ public class EmployeeController {
   
   private final EmployeeService employeeService;
 
+  @GetMapping("count")
+  public int countEmployee() {
+    return employeeService.countActiveEmployees();
+  }
+
   @GetMapping("/")
   public BaseResponse<ListResponse> getListEmployees(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
     ListResponse employees = employeeService.getListEmployees(page, size);

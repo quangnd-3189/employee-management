@@ -42,4 +42,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
   @Query("UPDATE Employee e SET e.deletedAt = CURRENT_TIMESTAMP WHERE e.id = ?1")
   int removeEmployeeById(UUID id);
 
+  @Query("SELECT COUNT(e) FROM Employee e WHERE e.deletedAt IS NULL")
+  int countByDeletedAtIsNull();
 }

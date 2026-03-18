@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.learnjiava.employee_management.cache.CacheService;
 import com.learnjiava.employee_management.common.UtilityService;
 import com.learnjiava.employee_management.common.httpresponse.ListResponse;
 import com.learnjiava.employee_management.department.entity.Department;
@@ -36,8 +37,20 @@ public class EmployeeService {
   private final DepartmentRepository departmentRepository;
   private final UtilityService utilityService;
   private final ModelMapper modelMapper;
+  private final CacheService cacheService;
+
   private static final Logger logger = LoggerFactory.getLogger(EmployeeService.class);
 
+  public int countActiveEmployees() {
+    Integer cachedCount = cacheService.getKeyFromCache("employeeCache", "count", Integer.class);
+    if (cachedCount != null) {
+      logger.info("Cache hit for countActiveEmployees: {}", cachedCount);
+      return cachedCount;
+    }
+    int count = employeeRepository.countByDeletedAtIsNull();
+    cacheService.setKeyToCache("employeeCache", "count", count);
+    return count;
+  }
 
   public List<EmployeeDTO> getAllEmployees() {
     List<Employee> employees = employeeRepository.findAllWithoutDeleteAt();

@@ -6,7 +6,7 @@
     <title>Employee Update</title>
     <script>
       // fetch department list for dropdown
-      fetch('http://localhost:8081/departments/all')
+      fetch('http://localhost:8082/departments/all')
         .then(response => response.json())
         .then(data => {
           console.log('Departments:', data);
@@ -22,7 +22,7 @@
           const urlParams = new URLSearchParams(window.location.search);
           const employeeId = urlParams.get('id');
           if (employeeId) {
-            fetch(`http://localhost:8081/employees/detail/${employeeId}`)
+            fetch(`http://localhost:8082/employees/detail/${employeeId}`)
               .then(response => response.json())
               .then(data => {
                 const employee = data.data;
@@ -49,7 +49,7 @@
       function updateEmployee() {
         const urlParams = new URLSearchParams(window.location.search);
         const employeeId = urlParams.get('id');
-        fetch('http://localhost:8081/employees/update', {
+        fetch('http://localhost:8082/employees/update', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'

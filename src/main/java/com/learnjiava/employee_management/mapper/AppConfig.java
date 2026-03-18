@@ -1,4 +1,4 @@
-package com.learnjiava.employee_management;
+package com.learnjiava.employee_management.mapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
